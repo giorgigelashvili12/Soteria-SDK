@@ -1,0 +1,15 @@
+{
+  "name": "soteria-sdk",
+  "version": "1.0.0",
+  "type": "module",
+  "exports": {
+    "./web": "./src/web/index.ts",
+    "./node": "./src/node/index.ts"
+  },
+  "typesVersions": {
+    "*": {
+      "web": ["src/web/index.ts"],
+      "node": ["src/node/index.ts"]
+    }
+  }
+}
