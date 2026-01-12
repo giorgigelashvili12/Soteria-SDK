@@ -2,14 +2,12 @@
   "name": "soteria-sdk",
   "version": "1.0.0",
   "type": "module",
+  "main": "src/node/js/index.js",
+  "types": "src/node/ts/index.ts",
   "exports": {
-    "./web": "./src/web/index.ts",
-    "./node": "./src/node/index.ts"
-  },
-  "typesVersions": {
-    "*": {
-      "web": ["src/web/index.ts"],
-      "node": ["src/node/index.ts"]
+    ".": {
+      "import": "./src/node/js/index.js",
+      "types": "./src/node/ts/index.ts"
     }
   }
 }
