@@ -1,5 +1,5 @@
-import { API_BASE, CHECKOUT_WEB } from "../../shared/js/constants.js";
-import crypto from 'node:crypto'; // Use node: prefix for built-in modules
+import { API_BASE, CHECKOUT_WEB } from "../shared/constants.js";
+import crypto from 'node:crypto'; 
 
 class SoteriaServer {
   #passkey = "";

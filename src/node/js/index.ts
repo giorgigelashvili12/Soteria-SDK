@@ -1,6 +1,6 @@
-import { API_BASE, CHECKOUT_WEB } from "../shared/constants";
-import { SoteriaConfig, SoteriaResponse } from "../shared/types";
-import crypto from 'crypto';
+import { API_BASE, CHECKOUT_WEB } from "../../shared/js/constants";
+import { SoteriaConfig, SoteriaResponse } from "../../shared/js/types";
+import * as crypto from 'node:crypto';
 
 class SoteriaServer {
   private passkey: string = "";

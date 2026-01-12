@@ -1,4 +1,4 @@
-import { CHECKOUT_WEB } from "../../shared/js/constants.js";
+import { CHECKOUT_WEB } from "../shared";
 
 export const soteria = {
     redirectToCheckout: (clientSecret) => {

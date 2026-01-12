@@ -2,12 +2,20 @@
   "name": "soteria-sdk",
   "version": "1.0.0",
   "type": "module",
-  "main": "src/node/js/index.js",
+  "main": "./src/node/js/index.js",
   "types": "src/node/ts/index.ts",
   "exports": {
     ".": {
-      "import": "./src/node/js/index.js",
+      "import": "./src/node/index.js",
       "types": "./src/node/ts/index.ts"
     }
+  },
+  "dependencies": {
+    "crypto": "^1.0.1",
+    "express": "^5.2.1",
+    "soteria-sdk": "github:giorgigelashvili12/Soteria-SDK"
+  },
+  "devDependencies": {
+    "@types/node": "^25.0.6"
   }
 }
