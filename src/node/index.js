@@ -142,7 +142,7 @@ class SoteriaServer {
   async editProduct(data) {
     if (!this.#passkey) throw new Error("Soteria not configured.");
 
-    const res = await fetch(`http://localhost:33031/api/v1/products/edit`, {
+    const res = await fetch(`${API_BASE}/products/edit`, {
       method: 'POST',
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({
@@ -175,7 +175,7 @@ class SoteriaServer {
       ...params
     }).toString();
   
-    const res = await fetch(`http://localhost:33031/api/v1/products/get?${queryParams}`, {
+    const res = await fetch(`${API_BASE}/products/get?${queryParams}`, {
       method: 'GET',
       headers: { "Content-Type": "application/json" }
     });
