@@ -110,6 +110,83 @@ class SoteriaServer {
 
     return await res.json();
   }
+
+  /**
+   * Delete a product from the catalog
+   * @param {string} productId 
+   */
+  async deleteProduct(productId) {
+    const res = await fetch(`${API_BASE}/products/delete`, {
+      method: 'POST',
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ passkey: this.#passkey, id: productId })
+    });
+  
+    if (!res.ok) {
+      const text = await res.text();
+      
+      if (text.includes("<!DOCTYPE html>")) {
+        throw new Error(`Server returned an HTML error page (404/500). Check if the URL ${API_BASE}/products/delete is correct.`);
+      }
+      
+      throw new Error(`API Error: ${res.status} - ${text}`);
+    }
+
+    return await res.json();
+  }
+
+  /**
+   * Update an existing product
+   * @param {Object} data - { id, name, price, sku, etc }
+   */
+  async editProduct(data) {
+    if (!this.#passkey) throw new Error("Soteria not configured.");
+
+    const res = await fetch(`http://localhost:33031/api/v1/products/edit`, {
+      method: 'POST',
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        ...data,
+        passkey: this.#passkey
+      })
+    });
+
+    if (!res.ok) {
+      const text = await res.text();
+      if (text.includes("<!DOCTYPE html>")) {
+        throw new Error("Backend Crushed: The server sent an HTML error page. Check your backend console logs.");
+      }
+      
+      const errorData = JSON.parse(text);
+      throw new Error(errorData.msg || "Edit failed");
+    }
+
+    return await res.json();
+  }
+
+  /**
+   * Fetches the merchant's product details
+   */
+  async getProduct(params = {}) {
+    if (!this.#passkey) throw new Error("Soteria not configured.");
+  
+    const queryParams = new URLSearchParams({
+      passkey: this.#passkey,
+      ...params
+    }).toString();
+  
+    const res = await fetch(`http://localhost:33031/api/v1/products/get?${queryParams}`, {
+      method: 'GET',
+      headers: { "Content-Type": "application/json" }
+    });
+  
+    if (!res.ok) {
+      const error = await res.json();
+      throw new Error(error.msg || "Fetch failed");
+    }
+  
+    return await res.json();
+  }
 }
 
 export const soteria = new SoteriaServer();
