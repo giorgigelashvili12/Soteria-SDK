@@ -22,6 +22,8 @@ class SoteriaServer {
     if (!this.#passkey) {
       throw new Error("Soteria not configured. Call .configure(passkey, secretKey) first.");
     }
+    
+    const data = await res.json().catch(() => ({}));
 
     const payload = JSON.stringify(items);
     const signature = crypto
@@ -41,12 +43,19 @@ class SoteriaServer {
       }),
     });
 
-    if (!res.ok) {
-      const error = await res.json();
-      throw new Error(error.msg || "Checkout session failed");
+    if(!res.ok) {
+      const e = new Error(data.msg || 'request failed');
+      e.status = res.status;
+      e.details = data;
+      throw e;
     }
 
-    return await res.json();
+
+    return {
+      status: res.status,
+      success: true,
+      ...data
+    }
   }
 
   /**
@@ -67,12 +76,21 @@ class SoteriaServer {
       body: JSON.stringify({ ...config, passkey: this.#passkey }),
     });
 
-    if (!res.ok) {
-      const error = await res.json();
-      throw new Error(error.msg || "Soteria session failed");
+    const data = await res.json().catch(() => ({}));
+
+    if(!res.ok) {
+      const e = new Error(data.msg || 'request failed');
+      e.status = res.status;
+      e.details = data;
+      throw e;
     }
 
-    return await res.json();
+
+    return {
+      status: res.status,
+      success: true,
+      ...data
+    }
   }
 
   /**
@@ -103,12 +121,21 @@ class SoteriaServer {
       })
     });
 
-    if (!res.ok) {
-      const error = await res.json();
-      throw new Error(error.msg || "Catalog sync failed");
+    const data = await res.json().catch(() => ({}));
+
+    if(!res.ok) {
+      const e = new Error(data.msg || 'request failed');
+      e.status = res.status;
+      e.details = data;
+      throw e;
     }
 
-    return await res.json();
+
+    return {
+      status: res.status,
+      success: true,
+      ...data
+    }
   }
 
   /**
@@ -121,18 +148,22 @@ class SoteriaServer {
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ passkey: this.#passkey, id: productId })
     });
+
+    const data = await res.json().catch(() => ({}));
   
-    if (!res.ok) {
-      const text = await res.text();
-      
-      if (text.includes("<!DOCTYPE html>")) {
-        throw new Error(`Server returned an HTML error page (404/500). Check if the URL ${API_BASE}/products/delete is correct.`);
-      }
-      
-      throw new Error(`API Error: ${res.status} - ${text}`);
+    if(!res.ok) {
+      const e = new Error(data.msg || 'request failed');
+      e.status = res.status;
+      e.details = data;
+      throw e;
     }
 
-    return await res.json();
+
+    return {
+      status: res.status,
+      success: true,
+      ...data
+    }
   }
 
   /**
@@ -151,17 +182,21 @@ class SoteriaServer {
       })
     });
 
-    if (!res.ok) {
-      const text = await res.text();
-      if (text.includes("<!DOCTYPE html>")) {
-        throw new Error("Backend Crushed: The server sent an HTML error page. Check your backend console logs.");
-      }
-      
-      const errorData = JSON.parse(text);
-      throw new Error(errorData.msg || "Edit failed");
+    const data1 = await res.json().catch(() => ({}));
+
+    if(!res.ok) {
+      const e = new Error(data1.msg || 'request failed');
+      e.status = res.status;
+      e.details = data1;
+      throw e;
     }
 
-    return await res.json();
+
+    return {
+      status: res.status,
+      success: true,
+      ...data1
+    }
   }
 
   /**
@@ -179,13 +214,22 @@ class SoteriaServer {
       method: 'GET',
       headers: { "Content-Type": "application/json" }
     });
+
+    const data = await res.json().catch(() => ({}));
   
-    if (!res.ok) {
-      const error = await res.json();
-      throw new Error(error.msg || "Fetch failed");
+    if(!res.ok) {
+      const e = new Error(data.msg || 'request failed');
+      e.status = res.status;
+      e.details = data;
+      throw e;
     }
-  
-    return await res.json();
+
+
+    return {
+      status: res.status,
+      success: true,
+      ...data
+    }
   }
 }
 
