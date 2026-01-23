@@ -29,7 +29,7 @@ class SoteriaServer {
       .update(payload)
       .digest('hex');
 
-    const res = await fetch(`http://localhost:33031/api/v1/products/create-checkout`, {
+    const res = await fetch(`${API_BASE}/products/create-checkout`, {
       method: "POST",
       headers: { 
         "Content-Type": "application/json",
