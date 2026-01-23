@@ -1,5 +1,5 @@
 import { API_BASE, CHECKOUT_WEB } from "../shared/constants.js";
-import crypto from 'node:crypto'; 
+import crypto from 'crypto'; 
 
 class SoteriaServer {
   #passkey = "";
@@ -22,8 +22,6 @@ class SoteriaServer {
     if (!this.#passkey) {
       throw new Error("Soteria not configured. Call .configure(passkey, secretKey) first.");
     }
-    
-    const data = await res.json().catch(() => ({}));
 
     const payload = JSON.stringify(items);
     const signature = crypto
@@ -31,7 +29,7 @@ class SoteriaServer {
       .update(payload)
       .digest('hex');
 
-    const res = await fetch(`${API_BASE}/products/create-checkout`, {
+    const res = await fetch(`http://localhost:33031/api/v1/products/create-checkout`, {
       method: "POST",
       headers: { 
         "Content-Type": "application/json",
@@ -42,6 +40,8 @@ class SoteriaServer {
         items: items
       }),
     });
+
+    const data = await res.json().catch(() => ({}));
 
     if(!res.ok) {
       const e = new Error(data.msg || 'request failed');
